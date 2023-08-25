@@ -1,7 +1,7 @@
 # PhoneticScore
 ----------
 
-Enhancement and creation of rules are welcomed, create a [/pulls](Pull Request).
+Enhancement and creation of rules are welcomed, create a [Pull Request](https://github.com/lpouit/PhoneticScore/pulls)
 
 ----------
 
