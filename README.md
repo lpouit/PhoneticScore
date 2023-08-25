@@ -6,7 +6,7 @@ Enhancement and creation of rules are welcomed, create a [/pulls](Pull Request).
 ----------
 
 ## Currently availables languages
-See [/phonetics]
+See [/phonetics](/phonetics)
 |LANGUAGE|ISO-CODE|LEVELS|
 |--------|--------|------|
 |French  |fra     |3     |
