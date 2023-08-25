@@ -1,0 +1,48 @@
+# expression régulière pour transcrire les mots français dans l'alphabet phonétique
+# phonèmes
+# Ɔ on
+# Ǝ an
+# Æ in
+# Œ eu(i)
+# U ou
+# Y u
+# ɲ gn
+
+# voyelle en début de phonème
+# aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy
+# consonnes
+# bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ
+# 
+
+ee
+E
+e
+Ɛ
+ij
+ƐJ
+ie
+I
+ou
+AU
+oe
+U
+u|uu
+Y
+eu
+Ø
+ui
+œy
+e\b
+Ə
+
+nj
+ɲ
+ng
+ɲ
+sj
+ʃ
+
+# supression des lettres en double
+(.)\1{1,}
+$1
+

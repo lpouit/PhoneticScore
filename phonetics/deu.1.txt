@@ -1,0 +1,91 @@
+# expression régulière pour transcrire les mots français dans l'alphabet phonétique
+# phonèmes
+# Ɔ on
+# Ǝ an
+# Æ in
+# Œ eu(i)
+# U ou
+# Y u
+# ɲ gn
+
+# voyelle en début de phonème
+# aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy
+# consonnes
+# bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ
+# 
+
+# fin de mot
+chs\b
+KS
+b\b
+P
+d\b
+T
+ig\b
+IÇ
+g\b
+K
+en\b
+ƏN
+em\b
+ƏM
+el\b
+ƏL
+er\b
+ƏR
+e\b
+Ə
+
+sch|sh
+ʃ
+ch
+Ç
+
+# voyelles
+# -------------
+au
+AO
+äu
+OJ
+ü|ue
+Y
+ö|oe
+Ø
+ie
+I
+ai|ay|ei|ey
+AI
+ä
+Ɛ
+
+# consonnes
+#--------------
+ß
+S
+w
+V
+ph
+F
+qu
+KV
+tz
+TS
+v
+F
+x
+KS
+z
+TS
+
+s(p|t)
+ʃ
+([aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy])s([aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy])
+$1Z$2
+([aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy])s([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+$1S$2
+
+
+# supression des lettres en double
+(.)\1{1,}
+$1
+

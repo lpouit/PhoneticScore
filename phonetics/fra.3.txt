@@ -1,0 +1,14 @@
+# suppression des voyelles et des semi-voyelles
+# phonèmes
+# Ɔ on
+# Ǝ an
+# Æ in
+
+([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+-null
+([ÆƆƎ])
+N
+
+# supression des lettres en double
+(.)\1{1,}
+$1

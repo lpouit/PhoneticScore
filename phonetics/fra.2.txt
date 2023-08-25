@@ -1,0 +1,14 @@
+# équivalence phonétique
+# pour réduire le nombre de phonèmes
+W
+U
+
+J
+I
+
+Œ
+Ə
+
+# supression des lettres en double
+(.)\1{1,}
+$1
