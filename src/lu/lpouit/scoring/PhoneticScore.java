@@ -46,9 +46,7 @@ public class PhoneticScore extends LevenshteinScore {
 		INSTANCES = new HashMap<>();
 	}
 
-	private static final String char2erase = ",;:=?./+%£$*&'(§!)-_|@#{}[]<>\\\"\\\\";
-	
-	private int level;
+	private int levelNb;
 	protected LinkedList<LinkedList<Pair<String, String>>> regles;
 
 	/**
@@ -63,7 +61,7 @@ public class PhoneticScore extends LevenshteinScore {
 	 */
 	protected PhoneticScore(String lang, boolean debug) throws IllegalArgumentException {
 		try {
-			this.level = setLanguage(lang, debug);
+			this.levelNb = setLanguage(lang, debug);
 		}catch(IOException ioe) {
 			throw new RuntimeException("Could not load Phonetic files", ioe);
 		}
@@ -76,12 +74,8 @@ public class PhoneticScore extends LevenshteinScore {
 	 * @param input {@link String} to normalise
 	 * @return Normalised {@link String}
 	 */
-	@Override
-	public String normalisation(String input) {
+	public static String normalisation(String input) {
 		String s2 = input.toLowerCase();
-		
-		for (int i=0; i<char2erase.length(); i++)
-			s2=s2.replace(char2erase.charAt(i), ' ');
 		
 		while (s2.contains("  "))
 			s2=s2.replace("  ", " ");
@@ -116,7 +110,7 @@ public class PhoneticScore extends LevenshteinScore {
 			}
 		}
 		if (debug) System.out.println();
-		return result.toUpperCase();
+		return result;
 	}
 
 	/**
@@ -132,7 +126,11 @@ public class PhoneticScore extends LevenshteinScore {
 	 */
 	@Override
 	public double similarityScoreByWord(String str1, String str2) {
-		return this.similarityScoreByWord(str1, str2, 2);
+		return this.similarityScoreByWord(str1, str2, false, 2);
+	}
+	@Override
+	public double similarityScoreByWord(String str1, String str2, boolean debug) {
+		return this.similarityScoreByWord(str1, str2, debug, 2);
 	}
 	
 	/**
@@ -147,16 +145,16 @@ public class PhoneticScore extends LevenshteinScore {
 	 * @param level of transcription (the highest the most phonetic-destructive)
 	 * @return the total score between 0 and 1
 	 */
-	public double similarityScoreByWord(String str1, String str2, int level) {
+	public double similarityScoreByWord(String str1, String str2, boolean debug, int level) {
 		String[] v1=normalisation(str1).split(" ");
 		String[] v2=normalisation(str2).split(" ");
 
 		for (int i=0; i<v1.length; i++)
-			v1[i]=getPhonetic(v1[i], level, false);
+			v1[i]=getPhonetic(v1[i], level, debug);
 		for (int i=0; i<v2.length; i++)
-			v2[i]=getPhonetic(v2[i], level, false);
+			v2[i]=getPhonetic(v2[i], level, debug);
 
-		return super.similarityScoreByWord(String.join(" ",v1), String.join(" ",v2));
+		return super.similarityScoreByWord(String.join(" ",v1), String.join(" ",v2), debug);
 	}
 
 	/**
@@ -245,7 +243,7 @@ public class PhoneticScore extends LevenshteinScore {
 	/**
 	 * @return The count of currently loaded levels.
 	 */
-	public int getLevel() {return level;}
+	public int getLevelNb() {return levelNb;}
 	
 	/**
 	 * Gets the static instance associated to a language and creates it if needed.<br>

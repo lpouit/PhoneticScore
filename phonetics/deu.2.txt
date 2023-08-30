@@ -1,10 +1,14 @@
-
-ʃ|Ç
+# close phonetics to reduce the number of phonemes
+ʃ|ç
 ʃ
-J
-I
+j
+j
+ʃs\b
+ʃ
 
-# lettre muette
-#----------------
+# silent letter
+#---------------
 h
+-null
+ɐ
 -null

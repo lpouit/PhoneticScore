@@ -1,71 +1,105 @@
-# expression régulière pour transcrire les mots français dans l'alphabet phonétique
-# phonèmes
-# Ɔ on
-# Ǝ an
-# Æ in
-# Œ eu(i)
-# U ou
-# Y u
-# ɲ gn
+# RegEx to transcript german to phonetics
+# changing order can alter the result because of dependance of some rules 
+# words come lowercase
+# we use transitional letters (uppercase or special) to have always 1 position phoneme
 
-# voyelle en début de phonème
-# aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy
-# consonnes
+# vowels at the beginning of a phoneme
+# aàâäEəɛeéèêëIiîïøOoôöUYuùûüy
+# weak vowels
+# ieJ
+# strong vowels
+# oaU
+# consonants
 # bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ
 # 
 
-# fin de mot
-chs\b
-KS
+# special
+\b(.)e(.)\b
+$1ɛ$2
+
+([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])chs([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+$1KS$2
+nk
+ɲK
+
+sch|sh
+ʃ
+([ieJ]|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])ch
+$1Ç
+([oauU])ch
+$1R
+
+# start of word
+\b([bB])e
+$1ə
+
+# end of word
 b\b
 P
 d\b
 T
 ig\b
 IÇ
-g\b
-K
-en\b
-ƏN
-em\b
-ƏM
+g([s]|\b)
+K$1
+
+
+en([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+əN$1
+em([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+əM$1
 el\b
-ƏL
-er\b
-ƏR
-e\b
-Ə
+əL
+ie\b
+I
 
-sch|sh
-ʃ
-ch
-Ç
+([e])r([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+əɐ$2
+([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])r([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+$1ɐ$2
 
-# voyelles
-# -------------
+ex
+ɛKS
+
+
+# vowels
+# ---------
 au
 AO
+ai|ay|ei|ey
+AJ
+ä
+ɛ
 äu
 OJ
-ü|ue
-Y
-ö|oe
-Ø
+ee
+E
+eu
+OJ
 ie
 I
-ai|ay|ei|ey
-AI
-ä
-Ɛ
+ö|oe
+ø
+ü|ue|y
+Y
+e([t])
+ɛ$1
+e([mM])([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy]|\b)
+E$1$2
+e([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZɲ])(\1{1,})
+ɛ$1$2
 
-# consonnes
-#--------------
+
+# consonants
+#---------------
 ß
 S
 w
 V
 ph
 F
+g([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+K$1
 qu
 KV
 tz
@@ -76,16 +110,63 @@ x
 KS
 z
 TS
+\bs([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])
+Z$1
 
-s(p|t)
-ʃ
-([aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy])s([aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy])
+#([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])s([pPtT])
+#$1ʃ$2
+([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])s([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])
 $1Z$2
-([aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy])s([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])s([bBcdDfgGhjƷkKʃlLmMnNpPqrRtTvwxzZʃɲ]|\b)
 $1S$2
 
+# back to lowercase
+A
+a
+Ç
+ç
+E
+e
+F
+f
+G
+g
+I
+i
+J
+j
+K
+k
+M
+m
+N
+n
+O
+o
+P
+p
+R
+r
+S
+s
+T
+t
+U
+u
+V
+v
+W
+w
+Y
+y
+Z
+z
+# to final phonetic alphabet
+Ǝ
+ɑ̃
+Æ
+ɛ̃
 
-# supression des lettres en double
-(.)\1{1,}
+# removal of letter in double
+(\D)\1{1,}
 $1
-

@@ -90,3 +90,6 @@ build/*
 !build/build.sh
 
 test/
+
+scoring.tests.out.txt
+phonetic.tests.out.txt

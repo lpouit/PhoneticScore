@@ -1,130 +1,151 @@
-# expression régulière pour transcrire les mots français dans l'alphabet phonétique
-# phonèmes
-# Ɔ on
+# RegEx to transcript from french to phonetics
+# changing order can alter the result because of dependance of some rules 
+# words come lowercase
+# we use transitional letters (upercase or special) to have always 1 position phoneme
+# ɔ on
 # Ǝ an
 # Æ in
-# Œ eu(i)
 # U ou
 # Y u
 # ɲ gn
 
-# voyelle en début de phonème
-# ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy
-# voyelle forte en début
-# ƆAaàâäOoôöUYŒuùûü
-# voyelle faible en début
-# ƎEƏƐeéèêëIiîïØ
-# voyelle en fin de phonème
-# AaàâäƏƐeéèêëIiîïØOoôöJUYŒuùûüy
-# consonnes
-# bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ
+# vowels at the beginning of a phoneme
+# ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy
+# strong vowels at the beginning
+# ɔAaàâäOoôöUYuùûü
+# weak vowels at the beginning
+# ƎEəɛeéèêëIiîïø
+# vowels at the end of a phoneme
+# AaàâäəɛeéèêëIiîïøOoôöJUYuùûüy
+# consonants
+# bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ
 # 
 
-# débuts de mot
-# ------------------
-# enivré
-\b(en)([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# full word
+\bet\b
+E
+\bne\b
+nə
+\b([cdl])e\b
+$1ə
+\b([cdl])es\b
+$1ɛ
+\best\b
+ɛ
+\bdix\b
+dIS
+\bque\b
+kə
+
+['’]
+-null
+
+# start of word
+# ----------------
+# ex: enivré
+\b(en)([ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy])
 Ǝn$2
-# ennui
-\b(enn)([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# ex: ennui
+\b(enn)([ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy])
 Ǝn$2
-# emmagasiné
-\b(emm)([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# ex: emmagasiné
+\b(emm)([ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy])
 Ǝm$2
 
-# fins de mot
-# --------------
-# pluriel
+# end of word
+# ---------------
+# plural
 ([^rR])s\b
 $1
-# atrium
+# ex: atrium
 ium\b
 JOM
 # 
 y\b
 I
-# paix
+# ex: paix
 aix\b
-Ɛ
-# tronc
+ɛ
+# ex: tronc
 onc\b
-Ɔ
-# sang
+ɔ
+# ex: sang
 ng\b
 N
-# temps
+# ex: temps
 emp\b
-ƎM
-# outil
-([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])il\b
+Ǝ
+# ex: outil
+([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])il\b
 $1I
-# portail fenouil
-([AaàâäƏƐeéèêëIiîïØOoôöJUYŒuùûüy])il\b
+# ex: portail fenouil
+([AaàâäəɛeéèêëIiîïøOoôöJUYuùûüy])il\b
 $1J
-# sirop galop
+# ex: sirop galop
 op\b
 O
-# pouls
+# ex: pouls
 (ouls)\b
 U
-# bleuet entremet
+# ex: bleuet entremet
 et\b
-Ɛ
-# autel entremet
+ɛ
+# ex: autel 
 el\b
-ƐL
-# travaux rouleaux
+ɛl
+# ex: travaux rouleaux
 aux\b
 au
-# cieux heureux
+# ex: cieux heureux
 eux\b
-Ø
-# rouler assez
+ø
+# ex: rouler assez
 (er|ez)\b
 E
-# autrement souvent
+# ex: autrement souvent
 ent\b
 Ǝ
-# patient 
-atient\b
-ASJÆ
-# mien gardien
+# ex: mien gardien
 ien\b
 JÆ
 
-# consonnes
-# -------------
+# ex: patient présidentiel
+ti([eɛo])
+SJ$1
+
+# consonants
+# --------------
 qu|q
-K
-# phare emphase
+k
+# ex: phare emphase
 ph
 f
-# h muet
+# silent h
 \bh|([^sc])h
 $1
-# façade façon
+# ex façade façon
 ç
 S
-# terre
+# ex: terre
 r
 R
-# peigne
+# ex: peigne
 gn
 ɲ
-# chiche
-sch|ch([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# ex: chiche
+sch|ch([ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy])
 ʃ$1
-# guitare guardien
-gu([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# ex: guitare guardien
+gu([ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy])
 G$1
-# ciguë aiguë
+# ex: ciguë aiguë
 guë|güe
 GY
 
-# voyelles
-# -------------
+# vowels
+# ---------
 ë
-Ɛ
+ɛ
 àâä
 a
 ùûü
@@ -134,157 +155,161 @@ i
 ï
 I
 
-#### son KS
-# excision
+#### sound kS
+# ex: excision
 xc
-KS
-# xylophage relax capex
-([AaàâäƏƐeéèêëIiîïØOoôöJUYŒuùûüy]|\b)x
-$1KS
-# accent accéder
-([AaàâäƏƐeéèêëIiîïØOoôöJUYŒuùûüy])cc([ƎEƏƐeéèêëIiîïØ])
-$1KS$2
+kS
+# ex: xylophage relax capex
+([AaàâäəɛeéèêëIiîïøOoôöJUYuùûüy]|\b)x
+$1kS
+# ex: accent accéder
+([AaàâäəɛeéèêëIiîïøOoôöJUYuùûüy])cc([ƎEəɛeéèêëIiîïø])
+$1kS$2
 
-#### son K
-# chrome
-ch([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])
-K$1
-# con cabas cratère accrobate cuite acte
-c([ƆAaàâäOoôöYuùûübBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
-K$1
-# accrobranche
-([AaàâäƏƐeéèêëIiîïØOoôöJUYŒuùûüy])cc([^ƎEƏƐeéèêëIiîïØ])
-$1K$2
+#### sound k
+# ex: chrome
+ch([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])
+k$1
+# ex: con cabas cratère accrobate cuite acte
+c([ɔAaàâäOoôöYuùûübcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]|\b)
+k$1
+# ex: accrobranche
+([AaàâäəɛeéèêëIiîïøOoôöJUYuùûüy])cc([^ƎEəɛeéèêëIiîïø])
+$1k$2
 
-#### son S
-# scie conscient
-sc([EƏƐeéèêëIiîïy]|\b)
+#### sound S
+# ex: scie conscient
+sc([EəɛeéèêëIiîïy]|\b)
 S$1
-# ce cieux cette cible écervelé
-c([ƎEƏƐeéèêëIiîïØ])
+# ex: ce cieux cette cible écervelé
+c([ƎEəɛeéèêëIiîïø])
 S$1
-# sauterelle son
-\bs([ƆAaàâäEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# ex: sauterelle son
+\bs([ɔAaàâäEəɛeéèêëIiîïøOoôöJUYuùûüy])
 S$1
 
-#### son Z
-# usé mesure
-([AaàâäƏƐeéèêëIiîïØOoôöJUYŒuùûüy])s([ƆAaàâäEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+#### sound Z
+# ex: usé mesure
+([AaàâäəɛeéèêëIiîïøOoôöJUYuùûüy])s([ɔAaàâäEəɛeéèêëIiîïøOoôöJUYuùûüy])
 $1Z$2
 
-#### son Ʒ
-# jambon enjambé
+#### sound ʒ
+# ex: jambon enjambé
 j
-Ʒ
-# gériatrie
-g([EƏƐeéèêIiîïƐ])
-Ʒ$1
+ʒ
+# ex: gériatrie
+g([EəɛeéèêIiîïɛ])
+ʒ$1
 
 
-# voyelles
+# semi-vowels
 
-# sienne
+# ex: sienne
 enn
-Ɛn
-# entêtement sentiment
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(en)([bBcdDfgGhjƷkKʃlLmMpPqrRsStTvwxzZʃɲ]|\b)
+ɛn
+# ex: entêtement sentiment
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])(en)([bcdfgGhjʒkʃlmMpqrRsStvwxzZʃɲ]|\b)
 $1Ǝ$3
-# emphase rempiler
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(em)([bBcdDfgGhjƷkKʃlLnNpPqrRsStTvwxzZʃɲ])
+# ex: emphase rempiler
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])(em)([bcdfgGhjʒkʃlnNpqrRsStvwxzZʃɲ])
 $1Ǝ$3
 
-# feuilles chevreuils
+# ex: feuilles chevreuils
 euill|ueill|euil|ueil
-ŒJ
-# éveil éveillé
+əJ
+# ex: éveil éveillé
 eill|eil
-ƐJ
-# vrillé étriller
+ɛJ
+# ex: vrillé étriller
 ill
 IJ
 
-y([ƆAaàâäEƏƐeéèêëIiîïØOoôöJUYƐŒuùûüy])
+y([ɔAaàâäEəɛeéèêëIiîïøOoôöJUYɛuùûüy])
 J$1
 
-ou([ƆAaàâäEƏƐeéèêëIiîïØOoôöJUYƐŒuùûüy])
+ou([ɔAaàâäEəɛeéèêëIiîïøOoôöJUYɛuùûüy])
 U$1
 
-oin([-]|[bBcdDfgGhjƷkKʃlLpPqrRsStTvwxzZʃɲ]+|\b)
+oin([-]|[bcdfgGhjʒkʃlpqrRsStvwxzZʃɲ]+|\b)
 WÆ$1
 
-oi([-]|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]+|\b)
+oi([-]|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]+|\b)
 WA$1
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(ein|ain|in|eun|un)([-]|[bBcdDfgGhjƷkKʃlLmMpPqrRsStTvwxzZʃɲ]+|\b)
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])(ein|ain|in|eun|un)([-]|[bcdfgGhjʒkʃlmMpqrRsStvwxzZʃɲ]+|\b)
 $1Æ$3
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(eim|aim|im|um)([-]|[bBcdDfgGhjƷkKʃlLnNpPqrRsStTvwxzZʃɲ]+|\b)
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])(eim|aim|im|um)([-]|[bcdfgGhjʒkʃlnNpqrRsStvwxzZʃɲ]+|\b)
 $1Æ$3
 
 onn
 ON
 omm
 OM
-(on|om)([-]|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]+|\b)
-Ɔ$2
+(on|om)([-]|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]+|\b)
+ɔ$2
 
-# scie italie
-i([ƏeIiîï]\b)
+# ex: scie italie
+i([əeIiîï]\b)
 I$1
-# rapide italie
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])i(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])
+# ex: rapide italie
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])i(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])
 $1I$2
-# ion ien
-i([ÆƆAaàâäƎEƏƐeéèêëIiîïØOoôöJUYŒuùûüy])
+# ex: ion ien
+i([ÆɔAaàâäƎEəɛeéèêëIiîïøOoôöJUYuùûüy])
 J$1
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])ui([-]|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]+|\b)
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])ui([-]|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]+|\b)
 $1YI$2
 
-emm
-Am
+# ex: femme
+(.)emm
+$1Am
 
 
-(an)([-]|[bBcdDfgGhjƷKʃlLmMpPqrRsStTvwxzZʃɲ]+|\b)
+(an)([-]|[bcdfgGhjʒkʃlmMpqrRsStvwxzZʃɲ]+|\b)
 Ǝ$2
 
-(am)([-]|[bBcdDfgGhjƷKʃlLnNpPqrRsStTvwxzZʃɲ]+|\b)
+(am)([-]|[bcdfgGhjʒkʃlnNpqrRsStvwxzZʃɲ]+|\b)
 Ǝ$2
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(ô|au|eau)([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+# sound O
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])(ô|au|eau)([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]|\b)
 $1O$3
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])ou([ƆƎÆŒbBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])ou([ɔƎÆbcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]|\b)
 $1U$2
 
 eu|oeu|œu
-Ø
+ø
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])[yî]([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])[yî]([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]|\b)
 $1I$2
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])[uû]
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])[uû]
 $1Y
 
 é
 E
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(a|à|â)([-]|[bBcdDfgGhjJƷKʃlLmMnNpPqrRsStTvwxzZ]+|\b)
+(\b|[bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])(a|à|â)([-]|[bcdfgGhjJʒkʃlmMnNpqrRsStvwxzZ]+|\b)
 $1A$3
 
-(\b|[bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])(ai|aî|ay|ey|ei|è|ê)([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
-$1Ɛ$3
+(\b|[bcdfgGhjJʒkʃlmMnNpqrRsStvwxzZʃɲ])(ai|aî|ay|ey|ei|è|ê)([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ]|\b)
+$1ɛ$3
 
-e(([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])\2{1,})
-Ɛ$1
-e([cKlLpPrR])([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])
-Ɛ$1$2
+e(([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])\2{1,})
+ɛ$1
+e([p][rR])
+ə$1
+e([cklprR])([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])
+ɛ$1$2
 
-([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])e([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])
-$1Ə$2
+([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])e([bcdfgGhjʒkʃlmMnNpqrRsStvwxzZʃɲ])
+$1ə$2
 
-# lettre muette
-# ----------------
+# silent letter
+# --------------
 \bh|([^sc])h
 $1
 [dhtx]\b
@@ -294,6 +319,41 @@ e\b
 e(an|Ǝ)
 $1
 
-# supression des lettres en double
-(.)\1{1,}
+# back to lowercase
+E
+e
+A
+a
+G
+g
+I
+i
+J
+j
+M
+m
+N
+n
+O
+o
+R
+r
+S
+s
+U
+u
+W
+w
+Y
+y
+Z
+z
+# to final phonetic alphabet
+Ǝ
+ɑ̃
+Æ
+ɛ̃
+
+# removal of letter in double
+(\D)\1{1,}
 $1

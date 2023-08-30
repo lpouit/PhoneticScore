@@ -31,7 +31,7 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 	 * @param input {@link String} to normalise
 	 * @return Normalised {@link String}
      */
-	public String normalisation(String s1) {
+	public static String normalisation(String s1) {
 		String s2 = s1;
 		for (char c: char2remove.toCharArray())
 			s2=s2.replace(c, ' ');
@@ -55,13 +55,32 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 	 * @return the total score between 0 and 1
 	 */
 	public double similarityScoreByWord(String str1, String str2) {
-		String[] v1=normalisation(str1).split(" ");
-		String[] v2=normalisation(str2).split(" ");
+		return similarityScoreByWord(str1, str2, false);
+	}
+	public double similarityScoreByWord(String str1, String str2, boolean debug) {
+		String[] v1=LevenshteinScore.normalisation(str1).split(" ");
+		String[] v2=LevenshteinScore.normalisation(str2).split(" ");
 		int r = Math.max(v1.length, v2.length);
 		int[][] distance = new int[r][r];
 		double[][] score = new double[r][r];
+		int shiftSpace = 0;
 		
+		if (debug) {
+			System.out.println("comparison word by word of \""+str1+"\" and \""+str2+"\"");
+			System.out.println("matrix of scores for "+str1+" vs."+str2);
+			for (int i2=0; i2<r; i2++) 
+				shiftSpace=Math.max(shiftSpace, v2[i2].length());
+			shiftSpace++;
+			System.out.print(displayIndentedValue(" ", shiftSpace));
+			for (int i2=0; i2<r; i2++) 
+				if (i2<v2.length) System.out.print(displayIndentedValue(v2[i2], shiftSpace));
+			System.out.println();
+		}
 		for (int i1=0; i1<r; i1++) {
+			if (debug && i1<v1.length) 
+				System.out.print(displayIndentedValue(v1[i1], shiftSpace));
+			else
+				System.out.print(displayIndentedValue(" ", shiftSpace));
 			for (int i2=0; i2<r; i2++) {
 				if (i1<v1.length && i2<v2.length) {
 					distance[i1][i2] = super.apply(v1[i1], v2[i2]);
@@ -70,20 +89,37 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 					distance[i1][i2] = Integer.MAX_VALUE;
 					score[i1][i2] = -1;
 				}
+				if (debug) System.out.print(displayIndentedValue(String.format("%.2f", score[i1][i2]),shiftSpace));
 			}
+			if (debug) System.out.println();
 		}
 		
 		HungarianAlgorithm ha = new HungarianAlgorithm(distance);
 		int[][] optimal = ha.findOptimalAssignment();
 
+		if (debug) {
+			System.out.println("best combination");
+			for (int i1=0; i1<optimal.length; i1++) {
+				for (int i2=0; i2<optimal[i1].length; i2++) {
+					System.out.print("  "+optimal[i1][i2]);
+				}
+				System.out.println();
+			}
+		}
+
 		double result=0;
 		int compteur=0;
+		if (debug) System.out.println("calculus");
 		for (int i=0; i<optimal.length; i++) {
-			if (score[optimal[i][0]][optimal[i][1]]>=0) {
-				result += score[optimal[i][0]][optimal[i][1]];
+			double lscore=score[optimal[i][1]][optimal[i][0]];
+			if (lscore>=0) {
+				if (debug) System.out.println(" "+optimal[i][0]+" "+optimal[i][1]+" "+lscore);
+				result += lscore;
 				compteur++;
 			}
 		}
+
+		if (debug) System.out.println("score="+(result / compteur)+" ("+result+"/"+compteur+")");
 		return result / compteur;
 	}
 	
@@ -109,6 +145,13 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 	 */
 	private double computeScore(int distance, int length) {
 		return (double)(length-distance)/(double)length;
+	}
+	
+	private String displayIndentedValue(String input, int indentation) {
+		String result=input;
+		while (result.length()<indentation)
+			result+=" ";
+		return result;
 	}
 	
 	/**

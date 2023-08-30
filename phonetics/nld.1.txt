@@ -1,16 +1,9 @@
-# expression régulière pour transcrire les mots français dans l'alphabet phonétique
-# phonèmes
-# Ɔ on
-# Ǝ an
-# Æ in
-# Œ eu(i)
-# U ou
-# Y u
-# ɲ gn
+# RegEx to transcript from dutsh to phonetics
+# changing order can alter the result because of dependance of some rules 
 
-# voyelle en début de phonème
+# vowels at the beginning of a phoneme
 # aàâäEƏƐeéèêëIiîïØOoôöUYuùûüy
-# consonnes
+# consonants
 # bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ
 # 
 
@@ -42,7 +35,6 @@ ng
 sj
 ʃ
 
-# supression des lettres en double
+# removal of letter in double
 (.)\1{1,}
 $1
-

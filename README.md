@@ -15,6 +15,7 @@ See [/phonetics](/phonetics)
 
 ## Examples
 ```java
+
 // The new instance will be created for the specified language.
 // The rules of phonetic transcription are automatically loaded.
 // This example is in French.

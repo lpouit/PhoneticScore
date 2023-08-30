@@ -1,14 +1,9 @@
-# équivalence phonétique
-# pour réduire le nombre de phonèmes
-W
-U
+# close phonetics to reduce the number of phonemes
+w
+u
+j
+i
 
-J
-I
-
-Œ
-Ə
-
-# supression des lettres en double
-(.)\1{1,}
+# removal of letter in double
+(\D)\1{1,}
 $1
