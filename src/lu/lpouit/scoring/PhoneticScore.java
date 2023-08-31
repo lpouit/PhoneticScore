@@ -59,9 +59,9 @@ public class PhoneticScore extends LevenshteinScore {
 	 * @throws RuntimeException caused by {@link IOException} If an exception occurs while reading the files.
 	 * @throws IllegalArgumentException If the level 1 file does not exist for this language.
 	 */
-	protected PhoneticScore(String lang, boolean debug) throws IllegalArgumentException {
+	protected PhoneticScore(String lang) throws IllegalArgumentException {
 		try {
-			this.levelNb = setLanguage(lang, debug);
+			this.levelNb = setLanguage(lang);
 		}catch(IOException ioe) {
 			throw new RuntimeException("Could not load Phonetic files", ioe);
 		}
@@ -91,12 +91,11 @@ public class PhoneticScore extends LevenshteinScore {
 	 * 
 	 * @param input {@link String} to normalise
 	 * @param maxLevel the maximum depth
-	 * @param debug debug to {@link System}'s out
 	 * @return phonetic {@link String}
 	 */
-	public String getPhonetic(String input, int maxLevel, boolean debug) {
+	public String getPhonetic(String input, int maxLevel) {
 		String result = normalisation(input);
-		if (debug)
+		if (DEBUG)
 			System.out.print(result+" ");
 		for(int level = 0; level < Math.min(maxLevel, regles.size()); level++) {
 			LinkedList<Pair<String, String>> currentLevel = regles.get(level);
@@ -104,12 +103,12 @@ public class PhoneticScore extends LevenshteinScore {
 				String nouveau = result.replaceAll(regle.getKey(), regle.getValue());
 				if(!nouveau.equals(result)) {
 					nouveau = nouveau.replaceAll(regle.getKey(), regle.getValue());
-					if (debug) System.out.print(nouveau+" ");
+					if (DEBUG) System.out.print(nouveau+" ");
 				}
 				result = nouveau;
 			}
 		}
-		if (debug) System.out.println();
+		if (DEBUG) System.out.println();
 		return result;
 	}
 
@@ -126,11 +125,7 @@ public class PhoneticScore extends LevenshteinScore {
 	 */
 	@Override
 	public double similarityScoreByWord(String str1, String str2) {
-		return this.similarityScoreByWord(str1, str2, false, 2);
-	}
-	@Override
-	public double similarityScoreByWord(String str1, String str2, boolean debug) {
-		return this.similarityScoreByWord(str1, str2, debug, 2);
+		return this.similarityScoreByWord(str1, str2, 2);
 	}
 	
 	/**
@@ -145,16 +140,16 @@ public class PhoneticScore extends LevenshteinScore {
 	 * @param level of transcription (the highest the most phonetic-destructive)
 	 * @return the total score between 0 and 1
 	 */
-	public double similarityScoreByWord(String str1, String str2, boolean debug, int level) {
-		String[] v1=normalisation(str1).split(" ");
-		String[] v2=normalisation(str2).split(" ");
+	public double similarityScoreByWord(String str1, String str2, int level) {
+		String[] v1=str1.split(" ");
+		String[] v2=str2.split(" ");
 
 		for (int i=0; i<v1.length; i++)
-			v1[i]=getPhonetic(v1[i], level, debug);
+			v1[i]=getPhonetic(v1[i], level);
 		for (int i=0; i<v2.length; i++)
-			v2[i]=getPhonetic(v2[i], level, debug);
+			v2[i]=getPhonetic(v2[i], level);
 
-		return super.similarityScoreByWord(String.join(" ",v1), String.join(" ",v2), debug);
+		return super.similarityScoreByWord(String.join(" ",v1), String.join(" ",v2));
 	}
 
 	/**
@@ -170,7 +165,7 @@ public class PhoneticScore extends LevenshteinScore {
 	 */
 	@Override
 	public double similarityScore(String str1, String str2) {
-		return super.similarityScore(getPhonetic(str1, 2, false), getPhonetic(str2, 2, false));
+		return this.similarityScore(str1, str2, 2);
 	}
 	
 	/**
@@ -186,19 +181,18 @@ public class PhoneticScore extends LevenshteinScore {
 	 * @return the total score between 0 and 1
 	 */
 	public double similarityScore(String str1, String str2, int level) {
-		return super.similarityScore(getPhonetic(str1, level, false), getPhonetic(str2, level, false));
+		return super.similarityScore(getPhonetic(str1, level), getPhonetic(str2, level));
 	}
 
 	/**
 	 * Load or reload rules for this language.<br>
 	 * 
 	 * @param language {@link String} ISO-639-2 (alpha 3)
-	 * @param debug Prints debug output to the {@link System}'s out
 	 * @return available number of levels {@link Integer}
 	 * @throws IOException If an exception occurs while reading the files.
 	 * @throws IllegalArgumentException If the first file doesn't exist.
 	 */
-	protected int setLanguage(String language, boolean debug) throws IOException {
+	protected int setLanguage(String language) throws IOException {
 		if(regles == null)
 			regles = new LinkedList<>();
 		else
@@ -228,11 +222,11 @@ public class PhoneticScore extends LevenshteinScore {
 				regles.add(currentLevel);
 				reglesScanner.close();
 			
-				if(debug)
+				if(DEBUG)
 					System.out.println(currentLevel.size()+" phonetic rules loaded from "+path);
 				i++;
 			} catch (IOException io) {
-				if(debug)
+				if(DEBUG)
 					System.err.println("error loading phonetic rules");
 				throw io;
 			}
@@ -255,7 +249,7 @@ public class PhoneticScore extends LevenshteinScore {
 	 */
 	public static PhoneticScore getInstance(String language) {
 		if(!INSTANCES.containsKey(language))
-			INSTANCES.put(language, new PhoneticScore(language, DEBUG));
+			INSTANCES.put(language, new PhoneticScore(language));
 		return INSTANCES.get(language);
 	}
 	
