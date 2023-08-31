@@ -20,26 +20,39 @@ Phonetic rules are stored as RegEx in [/phonetics](/phonetics)
 ## Examples
 ```java
 
-// The new instance will be created for the specified language.
+// One instance of LevenshteinScore is created at all.
+LevenshteinScore leven = PhoneticScore.getInstance();
+
+// A new instance of PhoneticScore is created for each the specified language.
 // The rules of phonetic transcription are automatically loaded.
 // This example is in French.
-PhoneticScore ph = PhoneticScore.getInstance("fra");
+PhoneticScore phon = PhoneticScore.getInstance("fra");
 
-// This function takes in count the word order.
-// Any unwanted characters will be removed, see PhoneticScore#normalisation(String)
-phon.similarityScore("Un ours casse un oeuf avec sa patte.", "Une aourse quasse un ouf avec sa pâte.");
-// Returns 0.7894736842105263
+// example of transcription of a sentence in French to phonetics
+phon.getPhonetic("Le jeune d'Artagnan s'éprend de l'épouse de son propriétaire, Constance Bonacieux, lingère de la reine Anne d'Autriche.", Level);
+// the result depends on the level
+// level 1: lə ʒøn dartaɲɑ̃ seprɑ̃ də lepuz də sɔ proprjetɛr, kɔstɑ̃s bonasjø, lɛ̃ʒɛr də la rɛn an dotriʃ.
+// level 2: lə ʒøn dartaɲɑ̃ seprɑ̃ də lepuz də sɔ proprietɛr, kɔstɑ̃s bonasiø, lɛ̃ʒɛr də la rɛn an dotriʃ.
+// level 3: l ʒn drtɲ spr d lpz d s prprtr, ksts bns, lʒr d l rn an dtrʃ.
 
-// This function ignores the word order.
-// Any unwanted characters will be removed, see PhoneticScore#normalisation(String)
-phon.similarityScoreByWord("Un ours casse un oeuf avec sa patte.", "Une aourse quasse un ouf avec sa pâte.");
-// Returns 0.7625
+// examples of similarity-scores 
+String s1="Un ours casse un oeuf avec sa patte."
+String s2="Une ourse kasse un euf avec sa pâte."
+// phonetic transcriptions are
+// ɛ̃ urs kas ɛ̃ øf avɛk sa pat.
+// yn urs kas ɛ̃ øf avɛk sa pat.
 
-phon.similarityScore("Un ours casse un oeuf avec sa patte.", "Un ouf ai quassé par la pâte d'une aourse.");
-// Returns 0.3333333333333333
+// score using only Levenshtein distance on the whole sentence, score=0.86
+leven.similarityScore(s1, s2);
 
-phon.similarityScoreByWord("Un ours casse un oeuf avec sa patte.", "Un ouf ai quassé par la pâte d'une aourse.");
-// Returns 0.041666666666666664
+// score using Levenshtein distance on each word, score=0.85
+leven.similarityScoreByWord(s1, s2);
+
+// score using phonetics level 2 and Levenshtein distance on the whole sentence, score=0.93
+phon.similarityScore(s1, s2);
+
+// score using phonetics level 2 and Levenshtein distance on each word, score=0.93
+phon.similarityScoreByWord(s1, s2);
 
 // To clear all the loaded instances from memory.
 PhoneticScore.resetInstances();
