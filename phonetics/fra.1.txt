@@ -263,8 +263,8 @@ J$1
 $1YI$2
 
 # ex: femme
-(.)emm
-$1Am
+emm
+Am
 
 
 (an)([-]|[bcdfgGhjʒkʃlmMpqrRsStvwxzZʃɲ]+|\b)

@@ -20,7 +20,12 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 		INSTANCE = new LevenshteinScore();
 	}
 	
-	private static final String char2remove = ",;:=?./+%£$*&'(§!ç)-_|@#{}[]<>\"\\";
+	/**
+	 * Describes if any debug informations should be printed to {@link System}.out
+	 */
+	public static boolean DEBUG = false;
+	
+	private static final String char2remove = ",;:=?./+%£$*&'(§!)-_|@#{}[]<>\"\\";
 	private static final String char2replace = "àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ";
 	private static final String remplacement= "aaaeeeeiioouuucAAAEEEEIIOOUUUC";
 	
@@ -55,9 +60,6 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 	 * @return the total score between 0 and 1
 	 */
 	public double similarityScoreByWord(String str1, String str2) {
-		return similarityScoreByWord(str1, str2, false);
-	}
-	public double similarityScoreByWord(String str1, String str2, boolean debug) {
 		String[] v1=LevenshteinScore.normalisation(str1).split(" ");
 		String[] v2=LevenshteinScore.normalisation(str2).split(" ");
 		int r = Math.max(v1.length, v2.length);
@@ -65,19 +67,18 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 		double[][] score = new double[r][r];
 		int shiftSpace = 0;
 		
-		if (debug) {
-			System.out.println("comparison word by word of \""+str1+"\" and \""+str2+"\"");
-			System.out.println("matrix of scores for "+str1+" vs."+str2);
-			for (int i2=0; i2<r; i2++) 
+		if (DEBUG) {
+			System.out.println("comparison word by word of \""+str1+"\" and \""+str2+"\" ; matrix of scores:");
+			for (int i2=0; i2<v2.length; i2++) 
 				shiftSpace=Math.max(shiftSpace, v2[i2].length());
 			shiftSpace++;
 			System.out.print(displayIndentedValue(" ", shiftSpace));
-			for (int i2=0; i2<r; i2++) 
-				if (i2<v2.length) System.out.print(displayIndentedValue(v2[i2], shiftSpace));
+			for (int i2=0; i2<v2.length; i2++) 
+				System.out.print(displayIndentedValue(v2[i2], shiftSpace));
 			System.out.println();
 		}
 		for (int i1=0; i1<r; i1++) {
-			if (debug && i1<v1.length) 
+			if (DEBUG && i1<v1.length) 
 				System.out.print(displayIndentedValue(v1[i1], shiftSpace));
 			else
 				System.out.print(displayIndentedValue(" ", shiftSpace));
@@ -89,15 +90,15 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 					distance[i1][i2] = Integer.MAX_VALUE;
 					score[i1][i2] = -1;
 				}
-				if (debug) System.out.print(displayIndentedValue(String.format("%.2f", score[i1][i2]),shiftSpace));
+				if (DEBUG) System.out.print(displayIndentedValue(String.format("%.2f", score[i1][i2]),shiftSpace));
 			}
-			if (debug) System.out.println();
+			if (DEBUG) System.out.println();
 		}
 		
 		HungarianAlgorithm ha = new HungarianAlgorithm(distance);
 		int[][] optimal = ha.findOptimalAssignment();
 
-		if (debug) {
+		if (DEBUG) {
 			System.out.println("best combination");
 			for (int i1=0; i1<optimal.length; i1++) {
 				for (int i2=0; i2<optimal[i1].length; i2++) {
@@ -109,17 +110,17 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 
 		double result=0;
 		int compteur=0;
-		if (debug) System.out.println("calculus");
+		//if (DEBUG) System.out.println("calculus");
 		for (int i=0; i<optimal.length; i++) {
 			double lscore=score[optimal[i][1]][optimal[i][0]];
 			if (lscore>=0) {
-				if (debug) System.out.println(" "+optimal[i][0]+" "+optimal[i][1]+" "+lscore);
+				//if (DEBUG) System.out.println(" "+optimal[i][0]+" "+optimal[i][1]+" "+lscore);
 				result += lscore;
 				compteur++;
 			}
 		}
 
-		if (debug) System.out.println("score="+(result / compteur)+" ("+result+"/"+compteur+")");
+		//if (DEBUG) System.out.println("score="+(result / compteur)+" ("+result+"/"+compteur+")");
 		return result / compteur;
 	}
 	
@@ -133,7 +134,7 @@ public class LevenshteinScore extends org.apache.commons.text.similarity.Levensh
 	 * @return the total score between 0 and 1
 	 */
 	public double similarityScore(String str1, String str2) {
-		return computeScore(super.apply(str1, str2), Math.max(str1.length(), str2.length()));
+		return computeScore(super.apply(LevenshteinScore.normalisation(str1), LevenshteinScore.normalisation(str2)), Math.max(str1.length(), str2.length()));
 	}
 
 	/**

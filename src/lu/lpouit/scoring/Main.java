@@ -22,7 +22,6 @@ public class Main {
 	
 	public static void main(String[] args) {
 		init();
-		//System.out.println(phon.similarityScoreByWord("le discours, interdit", "interdit, le : discours", true, 2));
 		mainMenu();
 		Scanner in = new Scanner(System.in);
 		while(in.hasNextLine()) {
@@ -52,7 +51,6 @@ public class Main {
 	}
 
 	public static void testPhonetics() {
-		init();
 		menuPhonetics();
 		Scanner in = new Scanner(System.in);
 		while(in.hasNextLine()) {
@@ -66,10 +64,10 @@ public class Main {
 				init();
 				break;
 			case "3":
-				convertTestFile();
+				transcriptTestFile();
 				break;
 			case "4":
-				inputSentence();
+				transcriptSentence();
 				break;
 			}
 			menuPhonetics();
@@ -84,11 +82,10 @@ public class Main {
 		System.out.println("  1  change language");
 		System.out.println("  2  re-load rules");
 		System.out.println("  3  transcript phonetic.tests.txt");
-		System.out.println("  4  input sentence");
+		System.out.println("  4  input manualy");
 	}
 
 	public static void testScoring() {
-		init();
 		menuScoring();
 		Scanner in = new Scanner(System.in);
 		while(in.hasNextLine()) {
@@ -104,6 +101,9 @@ public class Main {
 			case "3":
 				scoreTestFile();
 				break;
+			case "4":
+				scoreSentence();
+				break;
 			}
 			menuScoring();
 		}
@@ -117,6 +117,7 @@ public class Main {
 		System.out.println("  1  change language");
 		System.out.println("  2  re-load rules");
 		System.out.println("  3  compute scoring.tests.txt");
+		System.out.println("  4  input manualy");
 	}
 
 	public static void change_language() {
@@ -161,15 +162,15 @@ public class Main {
 		System.out.println("rules of phonetic transcription loaded for "+language);
 	}
 
-	private static void inputSentence() {
+	private static void transcriptSentence() {
 		System.out.println("your sentence:");
 		Scanner in = new Scanner(System.in);
 		String s=in.nextLine();
 		for (int i=1; i<=phon.getLevelNb(); i++)
-			System.out.println("Level "+i+": "+phon.getPhonetic(s, i, false));
+			System.out.println("Level "+i+": "+phon.getPhonetic(s, i));
 	}
 
-	private static void convertTestFile() {
+	private static void transcriptTestFile() {
 		System.out.println("<load words to be tested from phonetic.tests.txt");
 		System.out.println(">save phonetic transcription into phonetic.tests.out.txt");
 
@@ -182,7 +183,7 @@ public class Main {
 				String s = tests.nextLine();
 				writer.println("[Original] "+s);
 				for (int i=1; i<=phon.getLevelNb(); i++) {
-					String p = phon.getPhonetic(s, i, false);
+					String p = phon.getPhonetic(s, i);
 					writer.println("[Level "+i+"] "+p);
 				}
 			}
@@ -205,7 +206,15 @@ public class Main {
 			writer = new PrintStream(new File("./scoring.tests.out.txt"));
 			while(tests.hasNextLine()) {
 				String s1 = tests.nextLine();
-				String s2 = tests.nextLine();
+				String s2 = "";
+				if (tests.hasNextLine())
+					s2 = tests.nextLine();
+				else {
+					System.err.println();
+					System.err.println("test must be by pair (pair number of lines in the test-file)");
+					System.err.println();
+					break;
+				}
 				String r1 = "[score using renormalized Levenstein distance]: "+leven.similarityScore(s1, s2);
 				String r2 = "[score using renormalized Levenstein distance word by word]: "+leven.similarityScoreByWord(s1, s2);
 				writer.println(s1);
@@ -214,7 +223,7 @@ public class Main {
 				writer.println(r2);
 				for (int i=1; i<=phon.getLevelNb(); i++) {
 					r1 = "[score using renormalized Levenstein distance on phonetic transcription level "+i+"]: "+phon.similarityScore(s1, s2, i);
-					r2 = "[score using renormalized Levenstein distance word by word on phonetic transcription level "+i+"]: "+phon.similarityScoreByWord(s1, s2, false, i);
+					r2 = "[score using renormalized Levenstein distance word by word on phonetic transcription level "+i+"]: "+phon.similarityScoreByWord(s1, s2, i);
 					writer.println(r1);
 					writer.println(r2);
 				}
@@ -225,6 +234,28 @@ public class Main {
 		} catch (FileNotFoundException e) {
 			System.err.println("scoring tests failed");
 		}
+	}
+
+	private static void scoreSentence() {
+		boolean b = LevenshteinScore.DEBUG;
+		LevenshteinScore.DEBUG = true;
+		boolean b1 = PhoneticScore.DEBUG;
+		PhoneticScore.DEBUG = true;
+		
+		System.out.println("your 1st sentence:");
+		Scanner in = new Scanner(System.in);
+		String s1=in.nextLine();
+		System.out.println("your 2nd sentence:");
+		String s2=in.nextLine();
+		System.out.println("[score using renormalized Levenstein distance]: "+leven.similarityScore(s1, s2));
+		System.out.println("[score using renormalized Levenstein distance word by word]: "+leven.similarityScoreByWord(s1, s2));
+		for (int i=1; i<=phon.getLevelNb(); i++) {
+			System.out.println("[score using renormalized Levenstein distance on phonetic transcription level "+i+"]: "+phon.similarityScore(s1, s2, i));
+			System.out.println("[score using renormalized Levenstein distance word by word on phonetic transcription level "+i+"]: "+phon.similarityScoreByWord(s1, s2, i));
+		}
+		
+		LevenshteinScore.DEBUG = b;
+		PhoneticScore.DEBUG = b1;
 	}
 
 	private static void displayFile(String fileName) {
