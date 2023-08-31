@@ -19,8 +19,12 @@ $1ɛ$2
 
 ([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])chs([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
 $1KS$2
-nk
-ɲK
+n([dk])
+ɲ$1
+([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])r([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
+$1ɐ$2
+eɐ([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ])
+ɛɐ$1
 
 sch|sh
 ʃ
@@ -30,7 +34,7 @@ $1Ç
 $1R
 
 # start of word
-\b([bB])e
+\b([bBgG])e
 $1ə
 
 # end of word
@@ -42,25 +46,14 @@ ig\b
 IÇ
 g([s]|\b)
 K$1
-
-
-en([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
-əN$1
-em([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
-əM$1
-el\b
-əL
+e([lmn])\b
+ə$1
 ie\b
 I
-
-([e])r([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
-əɐ$2
-([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy])r([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZʃɲ]|\b)
-$1ɐ$2
-
-ex
-ɛKS
-
+is\b
+əs
+tion\b
+sion
 
 # vowels
 # ---------
@@ -82,11 +75,15 @@ I
 ø
 ü|ue|y
 Y
-e([t])
+eh
+E
+e([knɲt])
 ɛ$1
-e([mM])([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy]|\b)
-E$1$2
+e([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZɲ])([aàâäEəɛeéèêëIiîïøOoôöUYuùûüy]|\b)
+ɛ$1$2
 e([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZɲ])(\1{1,})
+ɛ$1$2
+e([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZɲ])([bBcdDfgGhjƷkKʃlLmMnNpPqrRsStTvwxzZɲ])
 ɛ$1$2
 
 
