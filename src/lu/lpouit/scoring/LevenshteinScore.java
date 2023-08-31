@@ -11,7 +11,7 @@ package lu.lpouit.scoring;
  * @see #getInstance()
  * 
  * @author lpouit
- * @version 0.1
+ * @since 0.1
  */
 public class LevenshteinScore extends org.apache.commons.text.similarity.LevenshteinDistance {
 	
