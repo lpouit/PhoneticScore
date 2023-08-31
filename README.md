@@ -1,15 +1,19 @@
 # PhoneticScore
 ----------
+This library is a toolbox with several ways to evaluate the similarity of words and texts.
+The first approach applies the Levenshtein distance on text normalised without accent.
+The second approach applies the Levenshtein distance on text transcripted in phonetics.
+For each one, you can score a whole sentence/text, or score it word by word independtly of the order.
 
-Enhancement and creation of rules are welcomed, create a [Pull Request](https://github.com/lpouit/PhoneticScore/pulls)
-
+Enhancement and creation of phonetics rules are welcomed, create a [Pull Request](https://github.com/lpouit/PhoneticScore/pulls)
 ----------
 
 ## Currently availables languages
-See [/phonetics](/phonetics)
+Phonetic rules are stored as RegEx in [/phonetics](/phonetics)
 |LANGUAGE|ISO-CODE|LEVELS|
 |--------|--------|------|
 |French  |fra     |3     |
+|German  |deu     |3     |
 
 ----------
 

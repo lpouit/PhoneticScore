@@ -36,5 +36,5 @@ sj
 ʃ
 
 # removal of letter in double
-(.)\1{1,}
+(\D)\1{1,}
 $1

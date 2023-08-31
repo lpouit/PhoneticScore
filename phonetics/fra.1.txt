@@ -24,11 +24,9 @@
 # full word
 \bet\b
 E
-\bne\b
-nə
-\b([cdl])e\b
+\b([cdlmnst])e\b
 $1ə
-\b([cdl])es\b
+\b([cdlmst])es\b
 $1ɛ
 \best\b
 ɛ
@@ -36,6 +34,8 @@ $1ɛ
 dIS
 \bque\b
 kə
+\bours\b
+URS
 
 ['’]
 -null
@@ -55,7 +55,7 @@ kə
 # end of word
 # ---------------
 # plural
-([^rR])s\b
+(.)s\b
 $1
 # ex: atrium
 ium\b
@@ -83,7 +83,7 @@ $1I
 $1J
 # ex: sirop galop
 op\b
-O
+o
 # ex: pouls
 (ouls)\b
 U
@@ -91,8 +91,8 @@ U
 et\b
 ɛ
 # ex: autel 
-el\b
-ɛl
+e([cl])\b
+ɛ$1
 # ex: travaux rouleaux
 aux\b
 au
@@ -146,9 +146,9 @@ GY
 # ---------
 ë
 ɛ
-àâä
+[àâä]
 a
-ùûü
+[ùûü]
 u
 î
 i
